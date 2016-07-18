@@ -1,0 +1,3 @@
+[run]
+source = reeve
+omit = reeve/test*
