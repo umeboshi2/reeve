@@ -14,7 +14,7 @@ def apiroot(prefix='/api', version='dev'):
 class BaseResource(BaseView):
     def __init__(self, request):
         super(BaseResource, self).__init__(request)
-        self.db = self.request.db
+        self.db = self.request.dbsession
         self.limit = None
         self.max_limit = 100
         
@@ -40,6 +40,8 @@ class BaseResource(BaseView):
             if limit > self.max_limit:
                 limit = self.max_limit
         q = self.collection_query()
+        #qq = q
+        #import pdb ; pdb.set_trace()
         total_count = q.count()
         q = q.offset(offset).limit(limit)
         objects = q.all()

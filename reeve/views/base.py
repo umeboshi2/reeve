@@ -18,7 +18,7 @@ class BaseUserView(BaseView):
         "Get user db object"
         if 'user' not in self.request.session:
             return None
-        db = self.request.db
+        db = self.request.dbsession
         user_id = self.request.session['user'].id
         return db.query(self.usermodel).get(user_id)
 
