@@ -4,9 +4,11 @@ from sqlalchemy import (
     Integer,
     Text,
     Unicode,
+    UnicodeText,
     DateTime,
     PickleType,
     Enum,
+    func,
 )
 
 from .meta import Base
@@ -46,9 +48,8 @@ class SiteDocument(Base, SerialBase):
     title = Column(Unicode(500))
     description = Column(Unicode(500))
     doctype = Column(DocType, default='markdown')
-    content = Column(PickleType)
-    created = Column(DateTime, default="now()")
-    modified = Column(DateTime, default="now()")
+    #content = Column(PickleType)
+    content = Column(UnicodeText)
+    created = Column(DateTime, default=func.now())
+    modified = Column(DateTime, default=func.now())
 
-
-    

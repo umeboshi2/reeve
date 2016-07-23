@@ -33,4 +33,22 @@ class SiteDocumentManager(BaseManager):
         return self.session.merge(d)
 
     
+    def update_document(self, doc, name, title, description, content,
+                     doctype='markdown'):
+        with transaction.manager:
+            doc.name = name
+            doc.title = title
+            doc.description = description
+            doc.content = content
+            doc.doctype = doctype
+            self.session.add(doc)
+        return self.session.merge(doc)
+    
+    
+    def delete_document(self, name):
+        with transaction.manager:
+            d = self.getbyname(name)
+            if d is not None:
+                self.session.delete(d)
+                
     

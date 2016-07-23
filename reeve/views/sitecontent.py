@@ -23,21 +23,39 @@ class SiteDocumentResource(BaseResource):
 
     def collection_query(self):
         return self.mgr.query
+
+    def get(self):
+        name = self.request.matchdict['name']
+        return self.serialize_object(self.mgr.getbyname(name))
     
-    def collection_post(self):
+    def _insert_or_update(self, name):
         request = self.request
-        name = request.json['name']
         title = request.json['title']
         description = request.json['description']
         content = request.json['content']
         # FIXME, don't hardcode markdown
         doctype = 'markdown'
+
+        doc = self.mgr.getbyname(name)
         args = (name, title, description, content, doctype)
-        doc = self.mgr.add_document(*args)
+        if doc is None:
+            doc = self.mgr.add_document(*args)
+        else:
+            doc = self.mgr.update_document(doc, *args)
         response = dict(data=doc.serialize(), result='success')
         return response
+        
+    def put(self):
+        name = self.request.matchdict['name']
+        return self._insert_or_update(name)
     
+        
     def get(self):
         name = self.request.matchdict['name']
         return self.serialize_object(self.mgr.getbyname(name))
+
+    def delete(self):
+        name = self.request.matchdict['name']
+        self.mgr.delete_document(name)
+        return dict(result='success')
     

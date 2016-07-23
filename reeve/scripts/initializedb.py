@@ -16,7 +16,7 @@ from ..models import (
     get_tm_session,
     )
 from ..models import MyModel
-
+from ..models.mymodel import SiteDocument
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -43,3 +43,10 @@ def main(argv=sys.argv):
 
         model = MyModel(name='one', value=1)
         dbsession.add(model)
+        doc = SiteDocument()
+        doc.name = 'startdoc'
+        doc.title = 'Welcome'
+        doc.description = 'Start Page'
+        doc.content = 'Hello World!!!'
+        dbsession.add(doc)
+        
